@@ -1,3 +1,4 @@
+import { TokenDto } from './dto/token.dto';
 import { LoginUsuarioDto } from './dto/login.dto';
 import { NuevoUsuarioDto } from './dto/nuevo-usuario.dto';
 import { AuthService } from './auth.service';
@@ -22,5 +23,10 @@ export class AuthController {
     @Post('login')
     login(@Body() dto: LoginUsuarioDto) {
         return this.authService.login(dto);
+    }
+
+    @Post('refresh')
+    refresh(@Body() dto: TokenDto) {
+        return this.authService.refresh(dto);
     }
 }

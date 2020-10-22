@@ -1,3 +1,4 @@
+import { TokenDto } from './dto/token.dto';
 import { PayloadInterface } from './payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
@@ -52,6 +53,18 @@ export class AuthService {
             nombreUsuario: usuario.nombreUsuario,
             email: usuario.email,
             roles: usuario.roles.map(rol => rol.rolNombre as RolNombre)
+        }
+        const token = await this.jwtService.sign(payload);
+        return {token};
+    }
+
+    async refresh(dto: TokenDto): Promise<any> {
+        const usuario = await this.jwtService.decode(dto.token);
+        const payload: PayloadInterface = {
+            id: usuario[`id`],
+            nombreUsuario: usuario[`nombreUsuario`],
+            email: usuario[`email`],
+            roles: usuario[`roles`]
         }
         const token = await this.jwtService.sign(payload);
         return {token};
